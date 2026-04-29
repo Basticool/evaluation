@@ -1,0 +1,72 @@
+
+====================================================================================================
+  Retail norm compliance evaluation — labeled traces
+====================================================================================================
+
+  Dataset : merged_traces_labels.jsonl  (100 labeled traces)
+  Norms   : all_retail_norms.json
+  Props   : atomic_propositions.json
+  Model   : gpt-5.4
+
+  ── NormMonitor pipeline (sensor grounding + temporal logic) ──
+
+----------------------------------------------------------------------------------------------------
+  Norm                                            Acc   Prec    Rec     F1  TP  FP  TN  FN
+----------------------------------------------------------------------------------------------------
+  N0-modify-order-items                         0.889  0.000  0.000  0.000    0   0   8   1
+  N1-modify-order-items                         0.778  1.000  0.667  0.800    4   0   3   2
+  N2-modify-order-items                         0.889  0.000  0.000  0.000    0   0   8   1
+  N3-modify-order-items                         1.000  0.000  0.000  0.000    0   0   9   0
+  N4-modify-order-items                         1.000  0.000  0.000  0.000    0   0   9   0
+  auth-eventually                               1.000  1.000  1.000  1.000   38   0   0   0
+  modify_items-only-on-pending                  1.000  0.000  0.000  0.000    0   0   5   0
+  no-modify-items-before-auth                   1.000  1.000  1.000  1.000    1   0   8   0
+  transfer-procedure                            0.333  0.000  0.000  0.000    0   2   1   0
+----------------------------------------------------------------------------------------------------
+  OVERALL                                       0.940  0.956  0.915  0.935   43   2  51   4
+====================================================================================================
+
+  ── LLM-as-judge (full trace + norm description) ──
+
+----------------------------------------------------------------------------------------------------
+  Norm                                            Acc   Prec    Rec     F1  TP  FP  TN  FN
+----------------------------------------------------------------------------------------------------
+  N0-modify-order-items                         0.444  0.000  0.000  0.000    0   4   4   1
+  N1-modify-order-items                         0.667  0.667  1.000  0.800    6   3   0   0
+  N2-modify-order-items                         0.111  0.111  1.000  0.200    1   8   0   0
+  N3-modify-order-items                         0.222  0.000  0.000  0.000    0   7   2   0
+  N4-modify-order-items                         0.778  0.000  0.000  0.000    0   2   7   0
+  auth-eventually                               1.000  1.000  1.000  1.000   38   0   0   0
+  modify_items-only-on-pending                  1.000  0.000  0.000  0.000    0   0   5   0
+  no-modify-items-before-auth                   1.000  1.000  1.000  1.000    1   0   8   0
+  transfer-procedure                            0.333  0.000  0.000  0.000    0   2   1   0
+----------------------------------------------------------------------------------------------------
+  OVERALL                                       0.730  0.639  0.979  0.773   46  26  27   1
+====================================================================================================
+
+  ── Head-to-head ──
+
+  Subset / Method                          N    Acc   Prec    Rec     F1
+  -----------------------------------------------------------------
+  ALL TRACES — NormMonitor               100  0.940  0.956  0.915  0.935
+  ALL TRACES — LLM judge                 100  0.730  0.639  0.979  0.773
+  -----------------------------------------------------------------
+  LLM-sensor norms — NormMonitor          35  0.829  0.667  0.500  0.571
+  LLM-sensor norms — LLM judge            35  0.486  0.292  0.875  0.438
+  -----------------------------------------------------------------
+  Regex-only norms — NormMonitor          65  1.000  1.000  1.000  1.000
+  Regex-only norms — LLM judge            65  0.862  0.812  1.000  0.897
+
+  ── Distributions (GT / pred / judge) ──
+
+  N0-modify-order-items                         GT:  sat=  8 viol=  1 n/a=  0  pred: sat=  9 viol=  0 n/a=  0  judge: sat=  4 viol=  4 n/a=  1
+  N1-modify-order-items                         GT:  sat=  0 viol=  6 n/a=  3  pred: sat=  0 viol=  4 n/a=  5  judge: sat=  0 viol=  9 n/a=  0
+  N2-modify-order-items                         GT:  sat=  2 viol=  1 n/a=  6  pred: sat=  1 viol=  0 n/a=  8  judge: sat=  0 viol=  9 n/a=  0
+  N3-modify-order-items                         GT:  sat=  0 viol=  0 n/a=  9  pred: sat=  0 viol=  0 n/a=  9  judge: sat=  1 viol=  7 n/a=  1
+  N4-modify-order-items                         GT:  sat=  0 viol=  0 n/a=  9  pred: sat=  0 viol=  0 n/a=  9  judge: sat=  5 viol=  2 n/a=  2
+  auth-eventually                               GT:  sat=  0 viol= 38 n/a=  0  pred: sat=  0 viol= 38 n/a=  0  judge: sat=  0 viol= 38 n/a=  0
+  modify_items-only-on-pending                  GT:  sat=  5 viol=  0 n/a=  0  pred: sat=  5 viol=  0 n/a=  0  judge: sat=  2 viol=  0 n/a=  3
+  no-modify-items-before-auth                   GT:  sat=  8 viol=  1 n/a=  0  pred: sat=  8 viol=  1 n/a=  0  judge: sat=  1 viol=  1 n/a=  7
+  transfer-procedure                            GT:  sat=  3 viol=  0 n/a=  0  pred: sat=  1 viol=  2 n/a=  0  judge: sat=  1 viol=  2 n/a=  0
+
+====================================================================================================

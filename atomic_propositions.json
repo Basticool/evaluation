@@ -1,0 +1,1849 @@
+{
+  "agent_called_find_user_id_by_email": {
+    "description": "The assistant message issues a find_user_id_by_email tool call.",
+    "examples": [
+      {
+        "assistant": "Let me look up your account. [tool_call: find_user_id_by_email(email='sara.doe@example.com')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_call",
+      "tool_name": "find_user_id_by_email",
+      "grounding_rule": "True at timestep t iff the assistant message at t contains a tool call whose name equals 'find_user_id_by_email'."
+    }
+  },
+  "agent_called_find_user_id_by_name_zip": {
+    "description": "The assistant message issues a find_user_id_by_name_zip tool call.",
+    "examples": [
+      {
+        "assistant": "I'll look you up by name and zip instead. [tool_call: find_user_id_by_name_zip(first_name='Sara', last_name='Doe', zip='90210')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_call",
+      "tool_name": "find_user_id_by_name_zip",
+      "grounding_rule": "True at timestep t iff the assistant message at t contains a tool call whose name equals 'find_user_id_by_name_zip'."
+    }
+  },
+  "auth_tool_returned_user_id": {
+    "description": "A tool-result message returns a valid user id as the result of a preceding find_user_id_by_email or find_user_id_by_name_zip call.",
+    "examples": [
+      {
+        "tool": "sara_doe_496"
+      },
+      {
+        "tool": "{\"user_id\": \"sara_doe_496\"}"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_result",
+      "source_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_name_zip"
+      ],
+      "grounding_rule": "True at timestep t iff (a) the message at t is a tool-result message, (b) the assistant tool call it resolves is find_user_id_by_email or find_user_id_by_name_zip, and (c) the result payload is a valid user id string (not an error, not empty, not a 'not found' signal). A user merely asserting their user id in a natural-language turn does NOT fire this AP.",
+      "regex_pattern": "^[a-z]+_[a-z]+_\\d+$"
+    }
+  },
+  "agent_called_cancel_pending_order": {
+    "description": "The assistant message issues a cancel_pending_order tool call.",
+    "examples": [
+      {
+        "assistant": "Cancelling your order now. [tool_call: cancel_pending_order(order_id='#W0000123', reason='no longer needed')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_call",
+      "tool_name": "cancel_pending_order",
+      "tool_type": "WRITE",
+      "grounding_rule": "True at timestep t iff the assistant message at t contains a tool call whose name equals 'cancel_pending_order'."
+    }
+  },
+  "agent_called_modify_pending_order_address": {
+    "description": "The assistant message issues a modify_pending_order_address tool call.",
+    "examples": [
+      {
+        "assistant": "Updating the shipping address now. [tool_call: modify_pending_order_address(order_id='#W0000123', address1='123 Main St', address2='', city='Boston', state='MA', country='USA', zip='02101')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_call",
+      "tool_name": "modify_pending_order_address",
+      "tool_type": "WRITE",
+      "grounding_rule": "True at timestep t iff the assistant message at t contains a tool call whose name equals 'modify_pending_order_address'."
+    }
+  },
+  "agent_called_modify_pending_order_payment": {
+    "description": "The assistant message issues a modify_pending_order_payment tool call.",
+    "examples": [
+      {
+        "assistant": "Switching the payment method. [tool_call: modify_pending_order_payment(order_id='#W0000123', payment_method_id='gift_card_0000001')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_call",
+      "tool_name": "modify_pending_order_payment",
+      "tool_type": "WRITE",
+      "grounding_rule": "True at timestep t iff the assistant message at t contains a tool call whose name equals 'modify_pending_order_payment'."
+    }
+  },
+  "agent_called_modify_pending_order_items": {
+    "description": "The assistant message issues a modify_pending_order_items tool call.",
+    "examples": [
+      {
+        "assistant": "Applying the item changes now. [tool_call: modify_pending_order_items(order_id='#W0000123', item_ids=['1008292230'], new_item_ids=['2001337402'], payment_method_id='credit_card_0000001')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_call",
+      "tool_name": "modify_pending_order_items",
+      "tool_type": "WRITE",
+      "grounding_rule": "True at timestep t iff the assistant message at t contains a tool call whose name equals 'modify_pending_order_items'."
+    }
+  },
+  "agent_called_return_delivered_order_items": {
+    "description": "The assistant message issues a return_delivered_order_items tool call.",
+    "examples": [
+      {
+        "assistant": "Initiating the return. [tool_call: return_delivered_order_items(order_id='#W0000123', item_ids=['1008292230'], payment_method_id='gift_card_0000001')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_call",
+      "tool_name": "return_delivered_order_items",
+      "tool_type": "WRITE",
+      "grounding_rule": "True at timestep t iff the assistant message at t contains a tool call whose name equals 'return_delivered_order_items'."
+    }
+  },
+  "agent_called_exchange_delivered_order_items": {
+    "description": "The assistant message issues an exchange_delivered_order_items tool call.",
+    "examples": [
+      {
+        "assistant": "Processing the exchange. [tool_call: exchange_delivered_order_items(order_id='#W0000123', item_ids=['1008292230'], new_item_ids=['2001337402'], payment_method_id='credit_card_0000001')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_call",
+      "tool_name": "exchange_delivered_order_items",
+      "tool_type": "WRITE",
+      "grounding_rule": "True at timestep t iff the assistant message at t contains a tool call whose name equals 'exchange_delivered_order_items'."
+    }
+  },
+  "agent_called_modify_user_address": {
+    "description": "The assistant message issues a modify_user_address tool call.",
+    "examples": [
+      {
+        "assistant": "Updating your default address. [tool_call: modify_user_address(user_id='sara_doe_496', address1='123 Main St', address2='', city='Boston', state='MA', country='USA', zip='02101')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_call",
+      "tool_name": "modify_user_address",
+      "tool_type": "WRITE",
+      "grounding_rule": "True at timestep t iff the assistant message at t contains a tool call whose name equals 'modify_user_address'."
+    }
+  },
+  "user_requested_cancel_order": {
+    "description": "True only on a user turn where the user asks to cancel a specific pending order, or asks whether a specific pending order can be cancelled. This includes direct cancellation requests ('cancel order #W123', 'I want to cancel this'), expressions of clear cancellation intent ('I no longer need this order', 'I ordered by mistake'), and questions about cancellability for a specific order ('can I still cancel?'). Do not fire on assistant turns, on user turns that merely ask for order status or cancellation policy without expressing intent to cancel a specific order, or on turns that only restate or confirm a cancellation that is already in progress or completed.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hi! How can I help you today?"
+          },
+          {
+            "role": "user",
+            "content": "I placed an order last night for a camping tent but I realize I don't need it."
+          },
+          {
+            "role": "assistant",
+            "content": "I'm sorry to hear that. Can you share your email or order number so I can look it up?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "My email is sarah@example.com. I'd like to cancel that order, please."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "I found your account. You have two pending orders: order #W3341188 for a laptop and order #W7721043 for a bookshelf."
+          },
+          {
+            "role": "user",
+            "content": "How much is the bookshelf order?"
+          },
+          {
+            "role": "assistant",
+            "content": "Order #W7721043 is for a walnut 5-shelf bookcase totaling $189.99."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "That's more than I expected. Is it too late to cancel order #W7721043?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hello! What can I assist you with?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "I accidentally ordered something twice last week — order #W0042817 is a duplicate. I need it cancelled right away."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "I can see your pending order #W9988201 for running shoes."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "When is that order expected to ship?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your order #W4412300 is currently pending."
+          },
+          {
+            "role": "user",
+            "content": "I'm considering cancelling it."
+          },
+          {
+            "role": "assistant",
+            "content": "You can cancel a pending order at any time before it ships."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "What's the cancellation policy? Do I get a full refund if I cancel now?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to cancel order #W3341188."
+          },
+          {
+            "role": "assistant",
+            "content": "I can cancel order #W3341188 (laptop, $899.99) with reason 'ordered by mistake'. Shall I proceed?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Yes, please go ahead and cancel it."
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "user",
+      "grounding_rule": "True at user-turn timestep t iff the user's message expresses intent for this specific action type. The TLM should ground this by semantic match to the action type, not by surface keywords alone. May fire at multiple timesteps in a conversation (user restates intent); only the earliest occurrence triggers the scoped norm."
+    }
+  },
+  "user_requested_modify_order_address": {
+    "description": "True only on a user turn where the user asks to change the shipping address on a specific pending order, or asks whether such a change is possible. This includes requests to update the delivery address before shipment, redirect a package to a new location, or correct an address error on a pending order. Do not fire on assistant turns, on user turns that merely ask what shipping address is currently on the order, on turns requesting changes to the default account address (a separate action), or on turns that only confirm an address change already proposed or in progress.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hello! How can I help you today?"
+          },
+          {
+            "role": "user",
+            "content": "I just placed an order but I need it delivered somewhere else."
+          },
+          {
+            "role": "assistant",
+            "content": "I can help with that. What is the order number or can you provide your email?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "My email is james@example.com. I need to update the shipping address on my order to my work address at 200 Corporate Blvd, Suite 400, Austin, TX 78701."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "You have a pending order #W5512390 for a standing desk, currently shipping to 14 Maple Ave, Portland, OR 97201."
+          },
+          {
+            "role": "user",
+            "content": "I'm moving next week."
+          },
+          {
+            "role": "assistant",
+            "content": "I understand. Would you like to update the address before the order ships?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Yes, can I change the shipping address on that order to my new place: 789 Pine St, Portland, OR 97202?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hi! How can I help?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Can I still update the delivery address on my pending order? I typed my old address by mistake."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Order #W5512390 is currently pending and hasn't shipped yet."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "What address is it being shipped to right now?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your pending order #W5512390 has been updated with the new shipping address."
+          },
+          {
+            "role": "user",
+            "content": "Great, thanks. While we're at it..."
+          },
+          {
+            "role": "assistant",
+            "content": "Of course! Is there anything else I can help with?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Can you also update the default address on my account to match the new one?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I'd like to update the address on my order to 456 Elm St, Seattle, WA 98101."
+          },
+          {
+            "role": "assistant",
+            "content": "I'll update the shipping address on order #W5512390 to 456 Elm St, Seattle, WA 98101. Shall I proceed?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Yes, please update it."
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "user",
+      "grounding_rule": "True at user-turn timestep t iff the user's message expresses intent for this specific action type. The TLM should ground this by semantic match to the action type, not by surface keywords alone. May fire at multiple timesteps in a conversation (user restates intent); only the earliest occurrence triggers the scoped norm."
+    }
+  },
+  "user_requested_modify_order_payment": {
+    "description": "True only on a user turn where the user asks to change the payment method on a specific pending order, or asks whether such a change is possible. This includes requests to switch to a different credit card, apply a gift card balance, or use a different payment instrument for a pending order. Do not fire on assistant turns, on user turns that merely ask which payment method is currently on the order, on turns requesting changes to default account payment settings, or on turns that only confirm a payment change already proposed or in progress.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hi! What can I assist you with today?"
+          },
+          {
+            "role": "user",
+            "content": "I have a pending order but I want to pay for it differently."
+          },
+          {
+            "role": "assistant",
+            "content": "I can help with payment changes on pending orders. Could you share more details or your order number?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "My order is #W2234567. I'd like to switch from my credit card to my gift card to cover the cost."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your pending order #W8812399 is for a smartwatch totaling $249.99, charged to your Visa ending in 4321."
+          },
+          {
+            "role": "user",
+            "content": "I got a gift card recently that I'd like to use."
+          },
+          {
+            "role": "assistant",
+            "content": "I can check if you have a gift card balance on file."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Can you switch the payment on order #W8812399 to my gift card instead?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "I've verified your identity. How can I help you?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "I think my credit card on file is expired. Is it possible to use a different payment method for my pending order?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Order #W8812399 is still pending and hasn't shipped yet."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Which credit card is currently set as the payment for that order?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "You currently have a Visa card ending in 4321 and a gift card with $50 balance on your account."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Do you accept PayPal for future orders?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Switch the payment on my order to my gift card."
+          },
+          {
+            "role": "assistant",
+            "content": "I'll update order #W8812399 to use your gift card (balance: $50). The remaining $199.99 would be charged to your Visa ending in 4321. Shall I proceed?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Yes, go ahead and make that change."
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "user",
+      "grounding_rule": "True at user-turn timestep t iff the user's message expresses intent for this specific action type. The TLM should ground this by semantic match to the action type, not by surface keywords alone. May fire at multiple timesteps in a conversation (user restates intent); only the earliest occurrence triggers the scoped norm."
+    }
+  },
+  "user_requested_modify_order_items": {
+    "description": "True only on a user turn where the user asks to modify item selections within an existing order: changing one or more ordered items to different variants/options or upgraded versions of the same product(s), or asking whether such item changes are possible for a specific order. This includes requests to switch color/size/material/style, upgrade items while keeping some attributes fixed, or asking if a pending order can be changed at the item-option level. Do not fire on assistant turns, on user turns that merely ask for order details, item IDs/product IDs, available options, or status, or on turns that only repeat/confirm a previously requested modification after the change is already being processed or completed.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hi! How can I help you today?"
+          },
+          {
+            "role": "user",
+            "content": "I have a pending order with some small t-shirts."
+          },
+          {
+            "role": "assistant",
+            "content": "I can help with pending orders. What would you like to do?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "I'd like to update all my pending small t-shirts to purple, same size, v-neck style, and preferably polyester."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Here are your recent orders. Order #W9911714 is pending and includes running shoes in size 9."
+          },
+          {
+            "role": "user",
+            "content": "Can you tell me more about that second order?"
+          },
+          {
+            "role": "assistant",
+            "content": "It is still pending, so changes may be possible."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Can you tell me more about which running shoes are included and the available options for upgrades?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hi! How can I help you today?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "I'd like to upgrade all my recent items to the most expensive versions available. Please keep the shoe size the same, and I can pay any difference with a gift card."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your second order, #W9911714, is currently pending."
+          },
+          {
+            "role": "assistant",
+            "content": "Since it is pending, it is possible to make changes to item options such as size or color."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Could you tell me the item ID or product ID for the running shoes? I want to understand what number I'd need if I decide to change something."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "You have two pending t-shirt orders."
+          },
+          {
+            "role": "user",
+            "content": "Please change all my pending t-shirts to purple, small, v-neck, polyester."
+          },
+          {
+            "role": "assistant",
+            "content": "Your request to change all your pending t-shirts to purple, small, v-neck, polyester is being processed."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Please proceed with modifying the t-shirts as I requested. However, I'm not comfortable confirming this change."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I'd like to edit my pending t-shirt order and switch it to a purple, small, v-neck polyester shirt."
+          },
+          {
+            "role": "assistant",
+            "content": "Understood."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL modify_pending_order_items({\"order_id\":\"#W6247578\"})"
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "user",
+      "grounding_rule": "True at user-turn timestep t iff the user's message expresses intent for this specific action type. The TLM should ground this by semantic match to the action type, not by surface keywords alone. May fire at multiple timesteps in a conversation (user restates intent); only the earliest occurrence triggers the scoped norm."
+    }
+  },
+  "user_requested_return_order": {
+    "description": "True only on a user turn where the user asks to return one or more items from a delivered order, asks whether a return is possible for specific items, or expresses intent to send back items they received. This includes requests for refunds tied to returning physical items, expressions of dissatisfaction paired with intent to return ('this is defective, I want to send it back'), and questions about whether specific delivered items are eligible for return. Do not fire on assistant turns, on user turns that only ask about return policy or windows without expressing intent for a specific order, or on turns that only confirm or restate a return already in progress.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hello! How can I help you today?"
+          },
+          {
+            "role": "user",
+            "content": "I received a package last week that I'm not happy with."
+          },
+          {
+            "role": "assistant",
+            "content": "I'm sorry to hear that. Could you tell me more about the issue or the order number?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "It's order #W1234567. The blender I received is defective — it makes a grinding noise. I'd like to send it back and get a refund."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "I can see your delivered order #W9988000 contains a wool sweater (item ID: 3302984712) and a pair of boots (item ID: 7610293847)."
+          },
+          {
+            "role": "user",
+            "content": "The sweater doesn't fit me at all."
+          },
+          {
+            "role": "assistant",
+            "content": "I'm sorry about that. Would you like to return it or exchange it for a different size?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "I'd just like to return the sweater and get my money back. Can I do that?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hi! What can I help you with?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "I want to return everything from my last delivered order. The items were damaged in shipping."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your order #W9988000 was delivered on April 20th."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "How long do I have to return items? What's the return window?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I'd like to return the sweater from order #W9988000."
+          },
+          {
+            "role": "assistant",
+            "content": "I'll process a return for the wool sweater (item ID: 3302984712) from order #W9988000 with the refund going to your Visa ending in 4321. Shall I proceed?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Yes, please proceed with the return as I asked."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your delivered order #W9988000 includes a wool sweater and a pair of boots."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "What size is the sweater in the order?"
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "user",
+      "grounding_rule": "True at user-turn timestep t iff the user's message expresses intent for this specific action type. The TLM should ground this by semantic match to the action type, not by surface keywords alone. May fire at multiple timesteps in a conversation (user restates intent); only the earliest occurrence triggers the scoped norm."
+    }
+  },
+  "user_requested_exchange_order": {
+    "description": "True only on a user turn where the user asks to exchange one or more items from a delivered order for different variants or products, or asks whether such an exchange is possible. This includes requests to swap an item for a different size/color/model, exchange a defective or unwanted item for a replacement, or questions about exchangeability for specific delivered items. Do not fire on assistant turns, on user turns that merely ask for product details or browse alternatives without exchange intent, on turns requesting changes to a pending order (a different action), or on turns that only confirm an exchange already in progress.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hello! What can I help you with today?"
+          },
+          {
+            "role": "user",
+            "content": "I received my order and the shoes don't fit."
+          },
+          {
+            "role": "assistant",
+            "content": "I'm sorry about that. What's the order number, and what size did you receive?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Order #W3344556, I got size 10 but I need size 11. Can I exchange them for the right size?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your delivered order #W6601234 includes a blue mechanical keyboard (item ID: 4431879023)."
+          },
+          {
+            "role": "user",
+            "content": "I actually wanted a different color."
+          },
+          {
+            "role": "assistant",
+            "content": "I see. Would you like to exchange it for a different variant?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Yes, is it possible to exchange the keyboard for the same model in black?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hi! How may I assist you today?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "I'd like to swap the headphones I received for a different pair — I want ones with noise cancelling. What options do you have for an exchange?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your delivered order #W6601234 includes a blue mechanical keyboard."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "What other keyboard models do you carry? I'm curious what's available."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "You have one pending order #W9900123 for a laptop and one delivered order #W8891234 for headphones."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Can I change the laptop model in my pending order to the 16-inch version instead?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to exchange the blue keyboard in order #W6601234 for the black one."
+          },
+          {
+            "role": "assistant",
+            "content": "I'll exchange the blue mechanical keyboard (item ID: 4431879023) for the black version (item ID: 8872341209) in order #W6601234. Any price difference will be charged to your Visa ending in 4321. Shall I proceed?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Yes, please go ahead with the exchange."
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "user",
+      "grounding_rule": "True at user-turn timestep t iff the user's message expresses intent for this specific action type. The TLM should ground this by semantic match to the action type, not by surface keywords alone. May fire at multiple timesteps in a conversation (user restates intent); only the earliest occurrence triggers the scoped norm."
+    }
+  },
+  "user_requested_modify_user_address": {
+    "description": "True only on a user turn where the user asks to update the default address on their user profile (distinct from modifying a specific order's shipping address), or asks whether this is possible. This includes requests to change the primary saved address, update the default delivery location for future orders, or fix address details on the user account. Do not fire on assistant turns, on user turns requesting address changes for a specific order (a different action), on turns that merely ask for the current address on file, or on turns that only confirm a profile address change already proposed or in progress.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Hello! How can I help you today?"
+          },
+          {
+            "role": "user",
+            "content": "I've recently moved to a new city."
+          },
+          {
+            "role": "assistant",
+            "content": "Welcome to your new city! Is there something I can help update on your account?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Yes, I'd like to update the default address on my account to my new address: 88 Harbor View Dr, San Francisco, CA 94103."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your account profile shows a default address of 14 Maple Ave, Portland, OR 97201."
+          },
+          {
+            "role": "user",
+            "content": "That address is outdated."
+          },
+          {
+            "role": "assistant",
+            "content": "I can update it for you. What is your new address?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Can you change my default profile address to 52 River Rd, Eugene, OR 97401?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "I've verified your identity. How can I assist you today?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "I need to update my default shipping address on file — I want all future orders to go to my new apartment."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "You have a pending order #W7712300 and one delivered order."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Can you update the shipping address on order #W7712300 to my new address?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "I've pulled up your account details."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "What default address do you have on file for me?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please change my default address to 88 Harbor View Dr, San Francisco, CA 94103."
+          },
+          {
+            "role": "assistant",
+            "content": "I'll update your profile default address to 88 Harbor View Dr, San Francisco, CA 94103. Should I proceed?"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Yes, please make that change."
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "user",
+      "grounding_rule": "True at user-turn timestep t iff the user's message expresses intent for this specific action type. The TLM should ground this by semantic match to the action type, not by surface keywords alone. May fire at multiple timesteps in a conversation (user restates intent); only the earliest occurrence triggers the scoped norm."
+    }
+  },
+  "agent_listed_action_details": {
+    "description": "True iff, in the evaluated assistant turn, the assistant explicitly states the concrete values for the arguments of the next imminent database/tool action, as determined by the relevant tool schema and prior context. The turn may ask for confirmation, or may simply announce it will proceed immediately; confirmation is not required. This includes enumerating item IDs, order IDs, replacement variants, reasons, payment/refund method, address fields, etc., even if some values are expressed in natural language rather than exact JSON key names; but it is false if the assistant is only presenting options, summarizing possibilities, or saying something vague like 'I'll update the order' without specifying the actual action parameters. Prior context matters because the target turn can rely on earlier turns to identify which tool/action is imminent, but the concrete parameter values themselves must be explicitly listed in the evaluated turn.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to upgrade all items in order #W4967593 to the most expensive available versions."
+          },
+          {
+            "role": "assistant",
+            "content": "I found the highest-priced replacements for each item."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "Here are the upgrades I will proceed with for order #W4967593: Office Chair -> item ID 4274709903; Electric Toothbrush -> item ID 6164262152; Backpack -> item ID 8084436579; Wristwatch -> item ID 4510078629. I will now modify order #W4967593 with those replacements using your saved gift card."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please upgrade everything in order #W9911714, but skip the running shoes if size 9 is not actually an upgrade."
+          },
+          {
+            "role": "assistant",
+            "content": "The first modification attempt failed because the running shoes replacement used the same item ID as the current shoes."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "I will skip the running shoes and update only these items in order #W9911714: Water Bottle to item ID 4579334072, Mechanical Keyboard to item ID 1151293680, and Makeup Kit to item ID 2882812427. I'll leave the shoes unchanged and proceed right away."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please return the non-water-resistant speaker from my delivered order, and for my pending laptop order replace the 17-inch laptop with a 13-inch one if that's what I want."
+          },
+          {
+            "role": "assistant",
+            "content": "I checked your orders and identified the speaker item ID 6704763132 in delivered order #W8528674. The pending laptop order is #W9672333 and contains a 17-inch laptop item ID 1684786391."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "I'll start the return for the non-water-resistant speaker (item ID: 6704763132) from order #W8528674, with the refund going to your PayPal account ending in 7664977 unless you prefer a gift card. For the laptop, please confirm whether you want me to replace the 17-inch laptop (item ID: 1684786391) in order #W9672333 with another 13-inch laptop."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Can you show me the fanciest upgrade options in order #W9911714?"
+          },
+          {
+            "role": "assistant",
+            "content": "I checked the products in that order."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "Here's a summary of the items in order #W9911714 and the fanciest available upgrade options for each: Water Bottle -> item ID 4579334072; Mechanical Keyboard -> item ID 1151293680; Running Shoes -> item ID 4153505238; Makeup Kit -> item ID 2882812427. Would you like to proceed with upgrading all these items to the listed versions? Please confirm."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to exchange the helmet, exchange the luggage set, and modify my pending grill order to match the grill I already received."
+          },
+          {
+            "role": "assistant",
+            "content": "I found your recent orders and identified the relevant items."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "Here's what I understand: exchange the helmet from order #W3947049 for a medium red high-ventilation helmet, exchange the luggage set from order #W6876713 for a two-piece black soft set, and modify pending order #W3561391 so the grill matches your delivered charcoal medium rotisserie grill. Please confirm that these details are correct and that you want me to proceed."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please change the t-shirt in my other pending order to purple, small, v-neck, polyester too."
+          },
+          {
+            "role": "assistant",
+            "content": "I already modified one pending t-shirt order successfully."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "I found another pending order with a t-shirt. Would you also like me to modify that item to your preferred options: purple, small, v-neck, polyester? Please confirm if you want to proceed with this change for that order as well."
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "assistant",
+      "grounding_rule": "True at an assistant-turn timestep t iff the message explicitly lists the concrete parameter values that would be arguments of the imminent tool call. Not satisfied by vague paraphrase such as 'I'll cancel it now'. The TLM should reference the tool schema when judging parameter coverage.",
+      "coverage_notes": "Single AP across all action types. Does not disambiguate which action is being listed; the TLM should ground conservatively (only fire when listing is unambiguously tied to the action under discussion)."
+    }
+  },
+  "user_confirmed_yes": {
+    "description": "True only when the user's current turn explicitly authorizes or confirms a concrete action that the assistant has just proposed or asked permission to take, and the action is identifiable from the immediately preceding context. This includes direct confirmations like 'yes,' 'please proceed,' or an imperative selection that clearly means to carry out the offered action now. Do not mark true for turns that merely provide requested information, ask the assistant to look something up, restate preferences or instructions without actually confirming a pending proposal, or include explicit non-confirmation/hesitation such as 'I'm not comfortable confirming this change.'",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "I found the shoes in order #W9911714. Can you confirm these are the shoes you want to exchange for item 4107812777?"
+          },
+          {
+            "role": "user",
+            "content": "Yes, those sound like the ones."
+          },
+          {
+            "role": "assistant",
+            "content": "Great. Please confirm if you want me to process the exchange to item 4107812777 using your gift card for any price difference."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Yes, please go ahead and process the exchange to item 4107812777, and use my gift card if needed."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Here are the available 13-inch laptop options: 1) i5, 16GB RAM, 512GB SSD, space grey. 2) i5, 16GB RAM, 1TB SSD, silver. Would you like to exchange your 17-inch laptop for one of these? Please specify which configuration you prefer so I can proceed."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Swap it for the 13-inch with the i5, silver, 1TB SSD. Just process it."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "To verify your identity, please provide your email address associated with your account. If you don't remember it, I can also use your full name and zip code."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Sure, my name is Ethan Garcia and my zip code is 80280. Can you look up my orders with that info?"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Would you like to proceed with upgrading all these items to the listed fanciest versions? If so, I'll select the highest-priced options above and update the order right away. Please confirm if this list and selection is what you want!"
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Please upgrade everything to the most expensive options — except for the running shoes, I need them in size 9. If that size isn't available in the fanciest upgrade, just skip upgrading the shoes and move on with the others. And for the makeup kit, you can pick the highest-priced one, I don't mind the brand or shade."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your request to change all your pending t-shirts to purple, small, v-neck, polyester is being processed. If you want me to finalize that change, please confirm."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Thanks for the update. Please proceed with modifying the tshirts as I requested — purple, small, v-neck, polyester for each pending item. However, I'm not comfortable confirming this change."
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "user",
+      "grounding_rule": "True at a user-turn timestep t iff the message is an explicit affirmative ('yes', 'confirm', 'proceed', 'go ahead') referring to a specific proposed action identifiable from immediate prior context. Not satisfied by ambiguous or conditional replies ('ok I guess', 'sure whatever', 'maybe'). Not satisfied by general agreement absent a specific pending proposal."
+    }
+  },
+  "user_confirmed_no": {
+    "description": "True iff the user's turn explicitly refuses, declines, withdraws, or withholds approval for the most recently proposed, requested, or already-pending action in context. This includes direct negatives ('no,' 'don't,' 'cancel that,' 'never mind') and explicit non-confirmation such as 'I'm not comfortable confirming this change' or 'I prefer not to confirm any modifications' when the current context is a pending modification or confirmation request. Do not fire for mere hesitation, questions, or restating a desired action without refusal; the refusal must be expressed in the evaluated user turn and interpreted relative to the latest action under discussion.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "I can cancel your subscription now. Do you want me to proceed?"
+          },
+          {
+            "role": "user",
+            "content": "Yes, cancel it."
+          },
+          {
+            "role": "assistant",
+            "content": "Before I do that, please confirm one more time that you want the cancellation."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Actually, never mind."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your request to change all pending t-shirts to purple, small, v-neck, polyester is being processed."
+          },
+          {
+            "role": "assistant",
+            "content": "If you need anything else, let me know."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Thanks for the update. Please proceed with modifying the tshirts as I requested — purple, small, v-neck, polyester for each pending item. However, I'm not comfortable confirming this change."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "Your modification request has already been submitted. If you want to undo it or discuss it further, tell me."
+          },
+          {
+            "role": "user",
+            "content": "I'm unsure about this."
+          },
+          {
+            "role": "assistant",
+            "content": "Understood. Let me know whether you want to keep the modification or not."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "I still prefer not to confirm any modifications. Let me know if there's anything else you need from me."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "I found two pending shirt orders. Would you like me to modify them to the new variant?"
+          },
+          {
+            "role": "user",
+            "content": "Maybe. What colors are available?"
+          },
+          {
+            "role": "assistant",
+            "content": "Blue, black, red, and purple are available."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "Please proceed with purple, small, v-neck, polyester."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "assistant",
+            "content": "I can update your shipping address to 12 Oak Street. Should I submit that change?"
+          },
+          {
+            "role": "user",
+            "content": "I'm not sure yet."
+          },
+          {
+            "role": "assistant",
+            "content": "No problem — take your time."
+          }
+        ],
+        "target": {
+          "role": "user",
+          "content": "What happens if I change it after the order ships?"
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "user",
+      "grounding_rule": "True at a user-turn timestep t iff the message is an explicit refusal or retraction ('no', 'don't', 'cancel that', 'never mind') of a proposed or pending action. The TLM should read the refusal in the context of the most recently proposed action.",
+      "coverage_notes": "Single AP across all action types. Context (which action is being refused) is established through precondition scoping at the norm level."
+    }
+  },
+  "agent_turn_has_multiple_tool_calls": {
+    "description": "The assistant-turn message contains two or more tool calls.",
+    "examples": [
+      {
+        "assistant": "[tool_call: get_order_details(order_id='#W0000123')] [tool_call: get_user_details(user_id='sara_doe_496')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "structural",
+      "turn_role": "assistant",
+      "grounding_rule": "True at an assistant-turn timestep t iff the message contains two or more tool-call entries. Determined by structural parsing of the message (count of tool-call entries); no semantic judgment required."
+    }
+  },
+  "agent_turn_has_text_with_tool_call": {
+    "description": "The assistant-turn message contains both user-directed text content and at least one tool call in the same turn.",
+    "examples": [
+      {
+        "assistant": "Here are the details of your order. I also see three other orders on your account. [tool_call: get_order_details(order_id='#W0000123')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "structural",
+      "turn_role": "assistant",
+      "grounding_rule": "True at an assistant-turn timestep t iff the message contains (a) user-directed text content --- explanations, questions, statements conveying information to the user --- AND (b) at least one tool-call entry. Brief pre-tool narration alone (e.g., 'let me check that') does not satisfy the text condition; the text must be substantive / user-directed. Determined by structural parsing plus a light check on whether text content is user-directed."
+    }
+  },
+  "agent_called_transfer_to_human_agents": {
+    "description": "The assistant message issues a transfer_to_human_agents tool call.",
+    "examples": [
+      {
+        "assistant": "[tool_call: transfer_to_human_agents(summary='Customer asking about partnership inquiries, outside retail agent scope.')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "tool_call",
+      "tool_name": "transfer_to_human_agents",
+      "tool_type": "GENERIC",
+      "grounding_rule": "True at timestep t iff the assistant message at t contains a tool call whose name equals 'transfer_to_human_agents'."
+    }
+  },
+  "agent_sent_transfer_message": {
+    "description": "True iff the evaluated assistant turn explicitly tells the user that they are being/have been transferred to a human agent (or that their request is being transferred to one), with wording that is the same message as the required transfer notice, allowing minor surface variation in case, tense, and phrasing such as 'You have been transferred' or 'Your request is being transferred.' Prior context matters: this especially includes cases where a transfer tool call or successful transfer appears earlier, but the AP is decided from whether this assistant turn itself communicates the transfer notification to the user. Do not count tool-call lines, internal status messages, promises like 'I can transfer you,' or unrelated statements that mention a human agent without actually notifying the user of an active transfer.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Can you connect me to a person?"
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL transfer_to_human_agents({\"summary\": \"User requested a human agent.\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "Transfer successful"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "You have been transferred to a human agent for further assistance."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "This is urgent. Please send me to a human agent."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL transfer_to_human_agents({\"summary\": \"Urgent request; user asked for human support.\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "Transfer successful"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "Your request is being transferred to a human agent who can further assist with your issue."
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to talk to a human."
+          },
+          {
+            "role": "assistant",
+            "content": "I can transfer you to a human agent after I verify your account."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "Please provide the email address on the account first."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please transfer me to a human agent."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL transfer_to_human_agents({\"summary\": \"User asked for transfer.\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "Transfer successful"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL transfer_to_human_agents({\"summary\": \"User asked for transfer.\"})"
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Can a human help me with this return?"
+          },
+          {
+            "role": "assistant",
+            "content": "A human agent can help with complex return issues."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "Would you like me to continue assisting here?"
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "assistant",
+      "grounding_rule": "True at an assistant-turn timestep t iff the message conveys the required transfer notification --- the policy-mandated text 'YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.' --- allowing tolerant matching on case, whitespace, and near-verbatim variants that preserve meaning. LLM-based grounding (ApLlmSensor). Does not accept paraphrases that substantively alter the notification content."
+    }
+  },
+  "agent_called_cancel_with_invalid_reason": {
+    "description": "The assistant message issues a cancel_pending_order tool call whose `reason` argument is not one of the two policy-allowed values.",
+    "examples": [
+      {
+        "assistant": "[tool_call: cancel_pending_order(order_id='#W0000123', reason='changed my mind')]"
+      },
+      {
+        "assistant": "[tool_call: cancel_pending_order(order_id='#W0000123', reason='duplicate order')]"
+      }
+    ],
+    "metadata": {
+      "ap_kind": "structural",
+      "turn_role": "assistant",
+      "grounding_rule": "True at an assistant-turn timestep t iff the message contains a cancel_pending_order tool call whose `reason` argument, after exact string match, is not a member of {'no longer needed', 'ordered by mistake'}. Exact match: case-sensitive, no paraphrase tolerance. Determined by structural parsing of tool-call arguments."
+    }
+  },
+  "agent_called_cancel_on_non_pending_order": {
+    "description": "True iff the evaluated assistant turn issues a cancel_pending_order tool call targeting an order whose status, as evidenced by the most recently visible get_order_details tool result or other explicit status signals in the prior trace, is something other than 'pending' (e.g., 'delivered', 'cancelled', 'return requested'). Requires positive evidence of non-pending status in the observable trace; if no prior status evidence exists for the targeted order, this AP returns false.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please cancel order #W0042817."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W0042817\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W0042817\", \"status\": \"delivered\", \"items\": [{\"name\": \"Camping Tent\", \"item_id\": \"3304982710\", \"price\": 89.99}]}"
+          },
+          {
+            "role": "assistant",
+            "content": "I see order #W0042817 for a Camping Tent."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL cancel_pending_order({\"order_id\": \"#W0042817\", \"reason\": \"no longer needed\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to cancel order #W3341188."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W3341188\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W3341188\", \"status\": \"cancelled\", \"items\": [{\"name\": \"Laptop\", \"item_id\": \"1684786391\", \"price\": 999.99}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL cancel_pending_order({\"order_id\": \"#W3341188\", \"reason\": \"ordered by mistake\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Can you cancel order #W9900001?"
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W9900001\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W9900001\", \"status\": \"pending\", \"items\": [{\"name\": \"Running Shoes\", \"item_id\": \"4153505238\", \"price\": 129.99}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL cancel_pending_order({\"order_id\": \"#W9900001\", \"reason\": \"no longer needed\"})"
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "assistant",
+      "requires_history": true,
+      "grounding_rule": "True at an assistant-turn timestep t iff the message contains a cancel_pending_order tool call whose target `order_id`, based on observable evidence in the prior trace (most recently observed status from get_order_details tool results, or other contextual signals), has a status other than 'pending'. LLM-based grounding (ApLlmSensor): the LLM examines trace history and judges the observed status for the target order. If no status evidence is available in the trace for this order, the LLM returns false for this AP (this case is about status-known-and-wrong, not status-unknown; status-check-before-action is a separate deferred norm)."
+    }
+  },
+  "agent_called_modify_address_on_non_pending_order": {
+    "description": "True iff the evaluated assistant turn issues a modify_pending_order_address tool call targeting an order whose status, as evidenced by the most recently visible get_order_details tool result or other explicit status signals in the prior trace, is something other than 'pending'. Requires positive evidence of non-pending status in the observable trace; if no prior status evidence exists for the targeted order, this AP returns false.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I need to update the address on order #W5512390."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W5512390\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W5512390\", \"status\": \"delivered\", \"items\": [{\"name\": \"Standing Desk\", \"item_id\": \"7841023619\"}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL modify_pending_order_address({\"order_id\": \"#W5512390\", \"address1\": \"789 Pine St\", \"city\": \"Portland\", \"state\": \"OR\", \"zip\": \"97202\", \"country\": \"USA\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please change the shipping address on order #W8812399 to my new address: 456 Elm St, Seattle, WA 98101."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W8812399\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W8812399\", \"status\": \"cancelled\", \"items\": [{\"name\": \"Smartwatch\", \"item_id\": \"5591023847\"}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL modify_pending_order_address({\"order_id\": \"#W8812399\", \"address1\": \"456 Elm St\", \"city\": \"Seattle\", \"state\": \"WA\", \"zip\": \"98101\", \"country\": \"USA\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Update the address on order #W2234567 to 123 Oak St, Boston, MA 02101."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W2234567\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W2234567\", \"status\": \"pending\", \"items\": [{\"name\": \"Office Chair\", \"item_id\": \"4274709903\"}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL modify_pending_order_address({\"order_id\": \"#W2234567\", \"address1\": \"123 Oak St\", \"city\": \"Boston\", \"state\": \"MA\", \"zip\": \"02101\", \"country\": \"USA\"})"
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "assistant",
+      "requires_history": true,
+      "grounding_rule": "True at an assistant-turn timestep t iff the message contains a modify_pending_order_address tool call whose target `order_id`, based on observable evidence in the prior trace (most recently observed status from get_order_details tool results, or other contextual signals), has a status other than 'pending'. LLM-based grounding (ApLlmSensor). If no status evidence is available in the trace for the target order, the LLM returns false (status-unknown case is covered by the deferred status-check-before-action norm)."
+    }
+  },
+  "agent_called_modify_payment_on_non_pending_order": {
+    "description": "True iff the evaluated assistant turn issues a modify_pending_order_payment tool call targeting an order whose status, as evidenced by the most recently visible get_order_details tool result or other explicit status signals in the prior trace, is something other than 'pending'. Requires positive evidence of non-pending status in the observable trace; if no prior status evidence exists for the targeted order, this AP returns false.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Switch the payment on order #W8812399 to my gift card."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W8812399\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W8812399\", \"status\": \"delivered\", \"items\": [{\"name\": \"Smartwatch\", \"item_id\": \"5591023847\"}], \"payment_method_id\": \"credit_card_4321\"}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL modify_pending_order_payment({\"order_id\": \"#W8812399\", \"payment_method_id\": \"gift_card_0000001\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I'd like to use my gift card for order #W3341188 instead of my credit card."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W3341188\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W3341188\", \"status\": \"return requested\", \"items\": [{\"name\": \"Laptop\", \"item_id\": \"1684786391\"}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL modify_pending_order_payment({\"order_id\": \"#W3341188\", \"payment_method_id\": \"gift_card_0000002\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please use my gift card for order #W9900001."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W9900001\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W9900001\", \"status\": \"pending\", \"items\": [{\"name\": \"Running Shoes\", \"item_id\": \"4153505238\"}], \"payment_method_id\": \"credit_card_9999\"}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL modify_pending_order_payment({\"order_id\": \"#W9900001\", \"payment_method_id\": \"gift_card_0000003\"})"
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "assistant",
+      "requires_history": true,
+      "grounding_rule": "True at an assistant-turn timestep t iff the message contains a modify_pending_order_payment tool call whose target `order_id`, based on observable evidence in the prior trace (most recently observed status from get_order_details tool results, or other contextual signals), has a status other than 'pending'. LLM-based grounding (ApLlmSensor). If no status evidence is available in the trace for the target order, the LLM returns false (status-unknown case is covered by the deferred status-check-before-action norm)."
+    }
+  },
+  "agent_called_modify_items_on_non_pending_order": {
+    "description": "True iff the evaluated assistant turn issues a modify_pending_order_items tool call targeting an order whose status, as evidenced by the most recently visible get_order_details tool result or other explicit status signals in the prior trace, is something other than 'pending'. Requires positive evidence of non-pending status in the observable trace; if no prior status evidence exists for the targeted order, this AP returns false.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Change the shirt in order #W6247578 to a purple one."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W6247578\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W6247578\", \"status\": \"delivered\", \"items\": [{\"name\": \"T-Shirt\", \"item_id\": \"9182736450\", \"options\": {\"color\": \"blue\", \"size\": \"small\"}}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL modify_pending_order_items({\"order_id\": \"#W6247578\", \"item_ids\": [\"9182736450\"], \"new_item_ids\": [\"7391024857\"], \"payment_method_id\": \"gift_card_0000001\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to upgrade the headphones in order #W4410293 to the premium model."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W4410293\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W4410293\", \"status\": \"cancelled\", \"items\": [{\"name\": \"Headphones\", \"item_id\": \"2938475610\"}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL modify_pending_order_items({\"order_id\": \"#W4410293\", \"item_ids\": [\"2938475610\"], \"new_item_ids\": [\"8471029384\"], \"payment_method_id\": \"credit_card_0000001\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please switch the laptop in order #W9900001 to the 16GB RAM version."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W9900001\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W9900001\", \"status\": \"pending\", \"items\": [{\"name\": \"Laptop\", \"item_id\": \"1684786391\", \"options\": {\"ram\": \"8GB\", \"storage\": \"512GB\"}}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL modify_pending_order_items({\"order_id\": \"#W9900001\", \"item_ids\": [\"1684786391\"], \"new_item_ids\": [\"3847561029\"], \"payment_method_id\": \"credit_card_0000002\"})"
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "assistant",
+      "requires_history": true,
+      "grounding_rule": "True at an assistant-turn timestep t iff the message contains a modify_pending_order_items tool call whose target `order_id`, based on observable evidence in the prior trace (most recently observed status from get_order_details tool results, or other contextual signals), has a status other than 'pending'. LLM-based grounding (ApLlmSensor). If no status evidence is available in the trace for the target order, the LLM returns false (status-unknown case is covered by the deferred status-check-before-action norm)."
+    }
+  },
+  "agent_called_return_on_non_delivered_order": {
+    "description": "True iff the evaluated assistant turn issues a return_delivered_order_items tool call targeting an order whose status, as evidenced by the most recently visible get_order_details tool result or other explicit status signals in the prior trace, is something other than 'delivered' (e.g., 'pending', 'cancelled'). Requires positive evidence of non-delivered status in the observable trace; if no prior status evidence exists for the targeted order, this AP returns false.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I'd like to return the sweater from order #W9988000."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W9988000\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W9988000\", \"status\": \"pending\", \"items\": [{\"name\": \"Wool Sweater\", \"item_id\": \"3302984712\"}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL return_delivered_order_items({\"order_id\": \"#W9988000\", \"item_ids\": [\"3302984712\"], \"payment_method_id\": \"credit_card_0000001\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to return the blender from order #W1234567."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W1234567\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W1234567\", \"status\": \"cancelled\", \"items\": [{\"name\": \"Blender\", \"item_id\": \"6104823759\"}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL return_delivered_order_items({\"order_id\": \"#W1234567\", \"item_ids\": [\"6104823759\"], \"payment_method_id\": \"gift_card_0000001\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I'd like to return the shoes from order #W3344556."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W3344556\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W3344556\", \"status\": \"delivered\", \"items\": [{\"name\": \"Running Shoes\", \"item_id\": \"4107812777\"}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL return_delivered_order_items({\"order_id\": \"#W3344556\", \"item_ids\": [\"4107812777\"], \"payment_method_id\": \"credit_card_0000003\"})"
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "assistant",
+      "requires_history": true,
+      "grounding_rule": "True at an assistant-turn timestep t iff the message contains a return_delivered_order_items tool call whose target `order_id`, based on observable evidence in the prior trace, has a status other than 'delivered'. LLM-based grounding (ApLlmSensor). If no status evidence is available in the trace, returns false (status-unknown is covered by the deferred status-check-before-action norm family)."
+    }
+  },
+  "agent_called_exchange_on_non_delivered_order": {
+    "description": "True iff the evaluated assistant turn issues an exchange_delivered_order_items tool call targeting an order whose status, as evidenced by the most recently visible get_order_details tool result or other explicit status signals in the prior trace, is something other than 'delivered' (e.g., 'pending', 'cancelled'). Requires positive evidence of non-delivered status in the observable trace; if no prior status evidence exists for the targeted order, this AP returns false.",
+    "examples": [
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to exchange the keyboard in order #W6601234 for the black version."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W6601234\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W6601234\", \"status\": \"pending\", \"items\": [{\"name\": \"Mechanical Keyboard\", \"item_id\": \"4431879023\", \"options\": {\"color\": \"blue\"}}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL exchange_delivered_order_items({\"order_id\": \"#W6601234\", \"item_ids\": [\"4431879023\"], \"new_item_ids\": [\"8872341209\"], \"payment_method_id\": \"credit_card_0000001\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please exchange the headphones in order #W4410293 for a noise-cancelling pair."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W4410293\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W4410293\", \"status\": \"cancelled\", \"items\": [{\"name\": \"Headphones\", \"item_id\": \"2938475610\"}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL exchange_delivered_order_items({\"order_id\": \"#W4410293\", \"item_ids\": [\"2938475610\"], \"new_item_ids\": [\"5729183046\"], \"payment_method_id\": \"gift_card_0000001\"})"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to exchange the shoes I received in order #W3344556 for a size 11."
+          },
+          {
+            "role": "assistant",
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W3344556\"})"
+          },
+          {
+            "role": "tool_result",
+            "content": "{\"order_id\": \"#W3344556\", \"status\": \"delivered\", \"items\": [{\"name\": \"Running Shoes\", \"item_id\": \"4107812777\", \"options\": {\"size\": \"10\"}}]}"
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "TOOL_CALL exchange_delivered_order_items({\"order_id\": \"#W3344556\", \"item_ids\": [\"4107812777\"], \"new_item_ids\": [\"7610293847\"], \"payment_method_id\": \"credit_card_0000001\"})"
+        },
+        "label": false
+      }
+    ],
+    "metadata": {
+      "ap_kind": "observation",
+      "turn_role": "assistant",
+      "requires_history": true,
+      "grounding_rule": "True at an assistant-turn timestep t iff the message contains an exchange_delivered_order_items tool call whose target `order_id`, based on observable evidence in the prior trace, has a status other than 'delivered'. LLM-based grounding (ApLlmSensor). If no status evidence is available in the trace, returns false."
+    }
+  }
+}
