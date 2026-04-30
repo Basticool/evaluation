@@ -1,9 +1,9 @@
 
 ====================================================================================================
-  Retail norm compliance evaluation — labeled traces
+  Norm compliance evaluation — labeled traces
 ====================================================================================================
 
-  Dataset : merged_traces_labels.jsonl  (100 labeled traces)
+  Dataset : merged_traces_labels.jsonl  (993 labeled traces)
   Norms   : all_retail_norms.json
   Props   : atomic_propositions.json
   Model   : gpt-5.4
@@ -13,17 +13,47 @@
 ----------------------------------------------------------------------------------------------------
   Norm                                            Acc   Prec    Rec     F1  TP  FP  TN  FN
 ----------------------------------------------------------------------------------------------------
-  N0-modify-order-items                         0.889  0.000  0.000  0.000    0   0   8   1
-  N1-modify-order-items                         0.778  1.000  0.667  0.800    4   0   3   2
-  N2-modify-order-items                         0.889  0.000  0.000  0.000    0   0   8   1
-  N3-modify-order-items                         1.000  0.000  0.000  0.000    0   0   9   0
-  N4-modify-order-items                         1.000  0.000  0.000  0.000    0   0   9   0
-  auth-eventually                               1.000  1.000  1.000  1.000   38   0   0   0
-  modify_items-only-on-pending                  1.000  0.000  0.000  0.000    0   0   5   0
-  no-modify-items-before-auth                   1.000  1.000  1.000  1.000    1   0   8   0
-  transfer-procedure                            0.333  0.000  0.000  0.000    0   2   1   0
+  N0-cancel                                     0.944  0.857  1.000  0.923    6   1  11   0
+  N0-exchange                                   1.000  1.000  1.000  1.000    1   0  28   0
+  N0-modify-order-items                         1.000  1.000  1.000  1.000    4   0  31   0
+  N0-modify-order-payment                       1.000  0.000  0.000  0.000    0   0   1   0
+  N0-modify-user-address                        1.000  1.000  1.000  1.000    7   0   3   0
+  N0-return                                     0.968  0.800  1.000  0.889    4   1  26   0
+  N1-cancel                                     0.611  0.571  0.500  0.533    4   3   7   4
+  N1-exchange                                   0.931  1.000  0.920  0.958   23   0   4   2
+  N1-modify-order-items                         0.914  1.000  0.889  0.941   24   0   8   3
+  N1-modify-order-payment                       1.000  1.000  1.000  1.000    1   0   0   0
+  N1-modify-user-address                        0.600  0.625  0.833  0.714    5   3   1   1
+  N1-return                                     0.839  0.913  0.875  0.894   21   2   5   3
+  N2-cancel                                     0.889  0.000  0.000  0.000    0   0  16   2
+  N2-exchange                                   0.966  0.000  0.000  0.000    0   0  28   1
+  N2-modify-order-items                         0.943  0.000  0.000  0.000    0   1  33   1
+  N2-modify-order-payment                       1.000  0.000  0.000  0.000    0   0   1   0
+  N2-modify-user-address                        1.000  0.000  0.000  0.000    0   0  10   0
+  N2-return                                     1.000  0.000  0.000  0.000    0   0  31   0
+  N3-exchange                                   1.000  0.000  0.000  0.000    0   0  29   0
+  N3-modify-order-items                         1.000  0.000  0.000  0.000    0   0  35   0
+  N3-modify-order-payment                       1.000  0.000  0.000  0.000    0   0   1   0
+  N3-modify-user-address                        0.500  1.000  0.444  0.615    4   0   1   5
+  N3-return                                     0.355  1.000  0.259  0.412    7   0   4  20
+  N4-exchange                                   1.000  0.000  0.000  0.000    0   0  29   0
+  N4-modify-order-items                         1.000  0.000  0.000  0.000    0   0  35   0
+  N4-modify-order-payment                       1.000  0.000  0.000  0.000    0   0   1   0
+  N4-return                                     1.000  0.000  0.000  0.000    0   0  31   0
+  auth-eventually                               1.000  1.000  1.000  1.000  114   0   0   0
+  exchange-only-on-delivered                    0.111  0.000  0.000  0.000    0   0   1   8
+  modify_items-only-on-pending                  0.933  0.000  0.000  0.000    0   0  14   1
+  modify_payment-only-on-pending                1.000  0.000  0.000  0.000    0   0   1   0
+  no-exchange-before-auth                       1.000  1.000  1.000  1.000   11   0  18   0
+  no-modify-items-before-auth                   1.000  1.000  1.000  1.000    8   0  27   0
+  no-modify-payment-before-auth                 1.000  0.000  0.000  0.000    0   0   1   0
+  no-return-before-auth                         1.000  1.000  1.000  1.000    8   0  23   0
+  one-user-per-conversation                     1.000  1.000  1.000  1.000   89   0  25   0
+  return-only-on-delivered                      0.833  1.000  0.333  0.500    1   0   9   2
+  single-tool-call-per-turn                     1.000  1.000  1.000  1.000   45   0   9   0
+  transfer-procedure                            1.000  0.000  0.000  0.000    0   0   4   0
 ----------------------------------------------------------------------------------------------------
-  OVERALL                                       0.940  0.956  0.915  0.935   43   2  51   4
+  OVERALL                                       0.936  0.972  0.880  0.924  387  11 542  53
 ====================================================================================================
 
   ── LLM-as-judge (full trace + norm description) ──
@@ -31,42 +61,102 @@
 ----------------------------------------------------------------------------------------------------
   Norm                                            Acc   Prec    Rec     F1  TP  FP  TN  FN
 ----------------------------------------------------------------------------------------------------
-  N0-modify-order-items                         0.444  0.000  0.000  0.000    0   4   4   1
-  N1-modify-order-items                         0.667  0.667  1.000  0.800    6   3   0   0
-  N2-modify-order-items                         0.111  0.111  1.000  0.200    1   8   0   0
-  N3-modify-order-items                         0.222  0.000  0.000  0.000    0   7   2   0
-  N4-modify-order-items                         0.778  0.000  0.000  0.000    0   2   7   0
-  auth-eventually                               1.000  1.000  1.000  1.000   38   0   0   0
-  modify_items-only-on-pending                  1.000  0.000  0.000  0.000    0   0   5   0
-  no-modify-items-before-auth                   1.000  1.000  1.000  1.000    1   0   8   0
-  transfer-procedure                            0.333  0.000  0.000  0.000    0   2   1   0
+  N0-cancel                                     1.000  1.000  1.000  1.000    6   0  12   0
+  N0-exchange                                   0.966  0.500  1.000  0.667    1   1  27   0
+  N0-modify-order-items                         0.886  0.500  0.500  0.500    2   2  29   2
+  N0-modify-order-payment                       1.000  0.000  0.000  0.000    0   0   1   0
+  N0-modify-user-address                        0.900  0.875  1.000  0.933    7   1   2   0
+  N0-return                                     0.935  0.667  1.000  0.800    4   2  25   0
+  N1-cancel                                     0.611  0.533  1.000  0.696    8   7   3   0
+  N1-exchange                                   0.828  0.857  0.960  0.906   24   4   0   1
+  N1-modify-order-items                         0.743  0.765  0.963  0.852   26   8   0   1
+  N1-modify-order-payment                       1.000  1.000  1.000  1.000    1   0   0   0
+  N1-modify-user-address                        0.600  0.600  1.000  0.750    6   4   0   0
+  N1-return                                     0.774  0.793  0.958  0.868   23   6   1   1
+  N2-cancel                                     0.556  0.200  1.000  0.333    2   8   8   0
+  N2-exchange                                   0.379  0.053  1.000  0.100    1  18  10   0
+  N2-modify-order-items                         0.229  0.036  1.000  0.069    1  27   7   0
+  N2-modify-order-payment                       1.000  0.000  0.000  0.000    0   0   1   0
+  N2-modify-user-address                        0.200  0.000  0.000  0.000    0   8   2   0
+  N2-return                                     0.355  0.000  0.000  0.000    0  20  11   0
+  N3-exchange                                   0.448  0.000  0.000  0.000    0  16  13   0
+  N3-modify-order-items                         0.400  0.000  0.000  0.000    0  21  14   0
+  N3-modify-order-payment                       1.000  0.000  0.000  0.000    0   0   1   0
+  N3-modify-user-address                        0.100  0.000  0.000  0.000    0   0   1   9
+  N3-return                                     0.903  1.000  0.889  0.941   24   0   4   3
+  N4-exchange                                   0.897  0.000  0.000  0.000    0   3  26   0
+  N4-modify-order-items                         0.886  0.000  0.000  0.000    0   4  31   0
+  N4-modify-order-payment                       1.000  0.000  0.000  0.000    0   0   1   0
+  N4-return                                     0.742  0.000  0.000  0.000    0   8  23   0
+  auth-eventually                               1.000  1.000  1.000  1.000  114   0   0   0
+  exchange-only-on-delivered                    1.000  1.000  1.000  1.000    8   0   1   0
+  modify_items-only-on-pending                  0.333  0.091  1.000  0.167    1  10   4   0
+  modify_payment-only-on-pending                1.000  0.000  0.000  0.000    0   0   1   0
+  no-exchange-before-auth                       1.000  1.000  1.000  1.000   11   0  18   0
+  no-modify-items-before-auth                   1.000  1.000  1.000  1.000    8   0  27   0
+  no-modify-payment-before-auth                 1.000  0.000  0.000  0.000    0   0   1   0
+  no-return-before-auth                         1.000  1.000  1.000  1.000    8   0  23   0
+  one-user-per-conversation                     0.921  0.908  1.000  0.952   89   9  16   0
+  return-only-on-delivered                      1.000  1.000  1.000  1.000    3   0   9   0
+  single-tool-call-per-turn                     0.889  0.882  1.000  0.938   45   6   3   0
+  transfer-procedure                            0.000  0.000  0.000  0.000    0   4   0   0
 ----------------------------------------------------------------------------------------------------
-  OVERALL                                       0.730  0.639  0.979  0.773   46  26  27   1
+  OVERALL                                       0.784  0.682  0.961  0.798  423 197 356  17
 ====================================================================================================
 
   ── Head-to-head ──
 
   Subset / Method                          N    Acc   Prec    Rec     F1
   -----------------------------------------------------------------
-  ALL TRACES — NormMonitor               100  0.940  0.956  0.915  0.935
-  ALL TRACES — LLM judge                 100  0.730  0.639  0.979  0.773
+  ALL TRACES — NormMonitor               993  0.936  0.972  0.880  0.924
+  ALL TRACES — LLM judge                 993  0.784  0.682  0.961  0.798
   -----------------------------------------------------------------
-  LLM-sensor norms — NormMonitor          35  0.829  0.667  0.500  0.571
-  LLM-sensor norms — LLM judge            35  0.486  0.292  0.875  0.438
+  LLM-sensor norms — NormMonitor         423  0.849  0.911  0.679  0.778
+  LLM-sensor norms — LLM judge           423  0.700  0.574  0.897  0.700
   -----------------------------------------------------------------
-  Regex-only norms — NormMonitor          65  1.000  1.000  1.000  1.000
-  Regex-only norms — LLM judge            65  0.862  0.812  1.000  0.897
+  Regex-only norms — NormMonitor         570  1.000  1.000  1.000  1.000
+  Regex-only norms — LLM judge           570  0.847  0.760  1.000  0.863
 
   ── Distributions (GT / pred / judge) ──
 
-  N0-modify-order-items                         GT:  sat=  8 viol=  1 n/a=  0  pred: sat=  9 viol=  0 n/a=  0  judge: sat=  4 viol=  4 n/a=  1
-  N1-modify-order-items                         GT:  sat=  0 viol=  6 n/a=  3  pred: sat=  0 viol=  4 n/a=  5  judge: sat=  0 viol=  9 n/a=  0
-  N2-modify-order-items                         GT:  sat=  2 viol=  1 n/a=  6  pred: sat=  1 viol=  0 n/a=  8  judge: sat=  0 viol=  9 n/a=  0
-  N3-modify-order-items                         GT:  sat=  0 viol=  0 n/a=  9  pred: sat=  0 viol=  0 n/a=  9  judge: sat=  1 viol=  7 n/a=  1
-  N4-modify-order-items                         GT:  sat=  0 viol=  0 n/a=  9  pred: sat=  0 viol=  0 n/a=  9  judge: sat=  5 viol=  2 n/a=  2
-  auth-eventually                               GT:  sat=  0 viol= 38 n/a=  0  pred: sat=  0 viol= 38 n/a=  0  judge: sat=  0 viol= 38 n/a=  0
-  modify_items-only-on-pending                  GT:  sat=  5 viol=  0 n/a=  0  pred: sat=  5 viol=  0 n/a=  0  judge: sat=  2 viol=  0 n/a=  3
-  no-modify-items-before-auth                   GT:  sat=  8 viol=  1 n/a=  0  pred: sat=  8 viol=  1 n/a=  0  judge: sat=  1 viol=  1 n/a=  7
-  transfer-procedure                            GT:  sat=  3 viol=  0 n/a=  0  pred: sat=  1 viol=  2 n/a=  0  judge: sat=  1 viol=  2 n/a=  0
+  N0-cancel                                     GT:  sat= 12 viol=  6 n/a=  0  pred: sat= 11 viol=  7 n/a=  0  judge: sat= 12 viol=  6 n/a=  0
+  N0-exchange                                   GT:  sat= 28 viol=  1 n/a=  0  pred: sat= 28 viol=  1 n/a=  0  judge: sat= 27 viol=  2 n/a=  0
+  N0-modify-order-items                         GT:  sat= 31 viol=  4 n/a=  0  pred: sat= 31 viol=  4 n/a=  0  judge: sat= 31 viol=  4 n/a=  0
+  N0-modify-order-payment                       GT:  sat=  1 viol=  0 n/a=  0  pred: sat=  1 viol=  0 n/a=  0  judge: sat=  1 viol=  0 n/a=  0
+  N0-modify-user-address                        GT:  sat=  3 viol=  7 n/a=  0  pred: sat=  3 viol=  7 n/a=  0  judge: sat=  2 viol=  8 n/a=  0
+  N0-return                                     GT:  sat= 27 viol=  4 n/a=  0  pred: sat= 26 viol=  5 n/a=  0  judge: sat= 25 viol=  6 n/a=  0
+  N1-cancel                                     GT:  sat=  1 viol=  8 n/a=  9  pred: sat=  0 viol=  7 n/a= 11  judge: sat=  0 viol= 15 n/a=  3
+  N1-exchange                                   GT:  sat=  0 viol= 25 n/a=  4  pred: sat=  0 viol= 23 n/a=  6  judge: sat=  1 viol= 28 n/a=  0
+  N1-modify-order-items                         GT:  sat=  0 viol= 27 n/a=  8  pred: sat=  0 viol= 24 n/a= 11  judge: sat=  1 viol= 34 n/a=  0
+  N1-modify-order-payment                       GT:  sat=  0 viol=  1 n/a=  0  pred: sat=  0 viol=  1 n/a=  0  judge: sat=  0 viol=  1 n/a=  0
+  N1-modify-user-address                        GT:  sat=  2 viol=  6 n/a=  2  pred: sat=  1 viol=  8 n/a=  1  judge: sat=  0 viol= 10 n/a=  0
+  N1-return                                     GT:  sat=  3 viol= 24 n/a=  4  pred: sat=  1 viol= 23 n/a=  7  judge: sat=  1 viol= 29 n/a=  1
+  N2-cancel                                     GT:  sat=  8 viol=  2 n/a=  8  pred: sat=  4 viol=  0 n/a= 14  judge: sat=  2 viol= 10 n/a=  6
+  N2-exchange                                   GT:  sat=  8 viol=  1 n/a= 20  pred: sat=  1 viol=  0 n/a= 28  judge: sat=  9 viol= 19 n/a=  1
+  N2-modify-order-items                         GT:  sat=  8 viol=  1 n/a= 26  pred: sat=  2 viol=  1 n/a= 32  judge: sat=  4 viol= 28 n/a=  3
+  N2-modify-order-payment                       GT:  sat=  0 viol=  0 n/a=  1  pred: sat=  1 viol=  0 n/a=  0  judge: sat=  1 viol=  0 n/a=  0
+  N2-modify-user-address                        GT:  sat=  5 viol=  0 n/a=  5  pred: sat=  3 viol=  0 n/a=  7  judge: sat=  1 viol=  8 n/a=  1
+  N2-return                                     GT:  sat=  0 viol=  0 n/a= 31  pred: sat=  0 viol=  0 n/a= 31  judge: sat=  6 viol= 20 n/a=  5
+  N3-exchange                                   GT:  sat=  0 viol=  0 n/a= 29  pred: sat=  0 viol=  0 n/a= 29  judge: sat=  3 viol= 16 n/a= 10
+  N3-modify-order-items                         GT:  sat=  0 viol=  0 n/a= 35  pred: sat=  0 viol=  0 n/a= 35  judge: sat=  1 viol= 21 n/a= 13
+  N3-modify-order-payment                       GT:  sat=  0 viol=  0 n/a=  1  pred: sat=  0 viol=  0 n/a=  1  judge: sat=  0 viol=  0 n/a=  1
+  N3-modify-user-address                        GT:  sat=  0 viol=  9 n/a=  1  pred: sat=  0 viol=  4 n/a=  6  judge: sat=  0 viol=  0 n/a= 10
+  N3-return                                     GT:  sat=  0 viol= 27 n/a=  4  pred: sat=  0 viol=  7 n/a= 24  judge: sat=  0 viol= 24 n/a=  7
+  N4-exchange                                   GT:  sat=  0 viol=  0 n/a= 29  pred: sat=  0 viol=  0 n/a= 29  judge: sat= 26 viol=  3 n/a=  0
+  N4-modify-order-items                         GT:  sat=  0 viol=  0 n/a= 35  pred: sat=  0 viol=  0 n/a= 35  judge: sat= 31 viol=  4 n/a=  0
+  N4-modify-order-payment                       GT:  sat=  0 viol=  0 n/a=  1  pred: sat=  0 viol=  0 n/a=  1  judge: sat=  1 viol=  0 n/a=  0
+  N4-return                                     GT:  sat=  0 viol=  0 n/a= 31  pred: sat=  0 viol=  0 n/a= 31  judge: sat= 23 viol=  8 n/a=  0
+  auth-eventually                               GT:  sat=  0 viol=114 n/a=  0  pred: sat=  0 viol=114 n/a=  0  judge: sat=  0 viol=114 n/a=  0
+  exchange-only-on-delivered                    GT:  sat=  1 viol=  8 n/a=  0  pred: sat=  9 viol=  0 n/a=  0  judge: sat=  1 viol=  8 n/a=  0
+  modify_items-only-on-pending                  GT:  sat= 14 viol=  1 n/a=  0  pred: sat= 15 viol=  0 n/a=  0  judge: sat=  4 viol= 11 n/a=  0
+  modify_payment-only-on-pending                GT:  sat=  1 viol=  0 n/a=  0  pred: sat=  1 viol=  0 n/a=  0  judge: sat=  1 viol=  0 n/a=  0
+  no-exchange-before-auth                       GT:  sat= 18 viol= 11 n/a=  0  pred: sat= 18 viol= 11 n/a=  0  judge: sat= 18 viol= 11 n/a=  0
+  no-modify-items-before-auth                   GT:  sat= 27 viol=  8 n/a=  0  pred: sat= 27 viol=  8 n/a=  0  judge: sat= 27 viol=  8 n/a=  0
+  no-modify-payment-before-auth                 GT:  sat=  1 viol=  0 n/a=  0  pred: sat=  1 viol=  0 n/a=  0  judge: sat=  1 viol=  0 n/a=  0
+  no-return-before-auth                         GT:  sat= 23 viol=  8 n/a=  0  pred: sat= 23 viol=  8 n/a=  0  judge: sat= 23 viol=  8 n/a=  0
+  one-user-per-conversation                     GT:  sat= 24 viol= 89 n/a=  1  pred: sat= 24 viol= 89 n/a=  1  judge: sat= 15 viol= 98 n/a=  1
+  return-only-on-delivered                      GT:  sat=  9 viol=  3 n/a=  0  pred: sat= 11 viol=  1 n/a=  0  judge: sat=  9 viol=  3 n/a=  0
+  single-tool-call-per-turn                     GT:  sat=  9 viol= 45 n/a=  0  pred: sat=  9 viol= 45 n/a=  0  judge: sat=  3 viol= 51 n/a=  0
+  transfer-procedure                            GT:  sat=  4 viol=  0 n/a=  0  pred: sat=  4 viol=  0 n/a=  0  judge: sat=  0 viol=  4 n/a=  0
 
 ====================================================================================================

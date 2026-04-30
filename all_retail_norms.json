@@ -1,4 +1,10 @@
 {
+  "_dataset_schema": {
+    "messages_path": ["simulation", "messages"],
+    "labels_field": "turn_ap_labels_by_norm",
+    "trace_id_path": ["simulation", "id"],
+    "task_id_path": ["task", "id"]
+  },
   "auth-eventually": {
     "precondition": "true",
     "obligation": "F((agent_called_find_user_id_by_email | agent_called_find_user_id_by_name_zip) & X(auth_tool_returned_user_id))",
@@ -143,6 +149,7 @@
     "obligation_type": "persistence",
     "reparative": null,
     "metadata": {
+      "precondition_description": "The user has been successfully authenticated at some point in the conversation.",
       "description": "Once a user has been successfully authenticated, the agent must not attempt to look up another user by calling find_user_id_by_email or find_user_id_by_name_zip again.",
       "constrained_actions": [
         "find_user_id_by_email",
@@ -179,6 +186,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-cancel",
     "metadata": {
+      "precondition_description": "The user has requested a cancellation at some point in the conversation.",
       "description": "After the user requests a cancellation, the agent must list the action details before any confirmation, denial, new request, or the action itself.",
       "constrained_actions": [
         "cancel_pending_order"
@@ -196,6 +204,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-cancel",
     "metadata": {
+      "precondition_description": "The user has requested a cancellation and the agent has subsequently listed the cancellation details.",
       "description": "After listing cancellation details, the agent must wait for explicit user confirmation or denial before issuing the action or processing a new request.",
       "constrained_actions": [
         "cancel_pending_order"
@@ -213,6 +222,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-cancel",
     "metadata": {
+      "precondition_description": "The user has requested a cancellation, the agent has listed the cancellation details, and the user has explicitly confirmed.",
       "description": "After the user confirms a cancellation, the agent must execute cancel_pending_order before processing any new cancellation request.",
       "constrained_actions": [
         "cancel_pending_order"
@@ -230,6 +240,7 @@
     "obligation_type": "persistence",
     "reparative": "N1-cancel",
     "metadata": {
+      "precondition_description": "The user has requested a cancellation at some point in the conversation.",
       "description": "Detector norm: fires when the user denies a cancellation request, triggering a CTD reparation that resets the flow to the pre-request state.",
       "constrained_actions": [
         "cancel_pending_order"
@@ -264,6 +275,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-order-address",
     "metadata": {
+      "precondition_description": "The user has requested a shipping address modification at some point in the conversation.",
       "description": "After the user requests a shipping address modification, the agent must list the action details before any confirmation, denial, new request, or the action itself.",
       "constrained_actions": [
         "modify_pending_order_address"
@@ -281,6 +293,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-order-address",
     "metadata": {
+      "precondition_description": "The user has requested a shipping address modification and the agent has subsequently listed the modification details.",
       "description": "After listing shipping address modification details, the agent must wait for explicit user confirmation or denial before issuing the action or processing a new request.",
       "constrained_actions": [
         "modify_pending_order_address"
@@ -298,6 +311,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-order-address",
     "metadata": {
+      "precondition_description": "The user has requested a shipping address modification, the agent has listed the modification details, and the user has explicitly confirmed.",
       "description": "After the user confirms a shipping address modification, the agent must execute modify_pending_order_address before processing any new request for this action.",
       "constrained_actions": [
         "modify_pending_order_address"
@@ -315,6 +329,7 @@
     "obligation_type": "persistence",
     "reparative": "N1-modify-order-address",
     "metadata": {
+      "precondition_description": "The user has requested a shipping address modification at some point in the conversation.",
       "description": "Detector norm: fires when the user denies a shipping address modification request, triggering a CTD reparation that resets the flow to the pre-request state.",
       "constrained_actions": [
         "modify_pending_order_address"
@@ -349,6 +364,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-order-payment",
     "metadata": {
+      "precondition_description": "The user has requested a payment modification at some point in the conversation.",
       "description": "After the user requests a payment modification, the agent must list the action details before any confirmation, denial, new request, or the action itself.",
       "constrained_actions": [
         "modify_pending_order_payment"
@@ -366,6 +382,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-order-payment",
     "metadata": {
+      "precondition_description": "The user has requested a payment modification and the agent has subsequently listed the modification details.",
       "description": "After listing payment modification details, the agent must wait for explicit user confirmation or denial before issuing the action or processing a new request.",
       "constrained_actions": [
         "modify_pending_order_payment"
@@ -383,6 +400,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-order-payment",
     "metadata": {
+      "precondition_description": "The user has requested a payment modification, the agent has listed the modification details, and the user has explicitly confirmed.",
       "description": "After the user confirms a payment modification, the agent must execute modify_pending_order_payment before processing any new request for this action.",
       "constrained_actions": [
         "modify_pending_order_payment"
@@ -400,6 +418,7 @@
     "obligation_type": "persistence",
     "reparative": "N1-modify-order-payment",
     "metadata": {
+      "precondition_description": "The user has requested a payment modification at some point in the conversation.",
       "description": "Detector norm: fires when the user denies a payment modification request, triggering a CTD reparation that resets the flow to the pre-request state.",
       "constrained_actions": [
         "modify_pending_order_payment"
@@ -434,6 +453,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-order-items",
     "metadata": {
+      "precondition_description": "The user has requested an order item modification at some point in the conversation.",
       "description": "After the user requests an item modification, the agent must list the action details before any confirmation, denial, new request, or the action itself.",
       "constrained_actions": [
         "modify_pending_order_items"
@@ -451,6 +471,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-order-items",
     "metadata": {
+      "precondition_description": "The user has requested an order item modification and the agent has subsequently listed the modification details.",
       "description": "After listing item modification details, the agent must wait for explicit user confirmation or denial before issuing the action or processing a new request.",
       "constrained_actions": [
         "modify_pending_order_items"
@@ -468,6 +489,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-order-items",
     "metadata": {
+      "precondition_description": "The user has requested an order item modification, the agent has listed the modification details, and the user has explicitly confirmed.",
       "description": "After the user confirms an item modification, the agent must execute modify_pending_order_items before processing any new request for this action.",
       "constrained_actions": [
         "modify_pending_order_items"
@@ -485,6 +507,7 @@
     "obligation_type": "persistence",
     "reparative": "N1-modify-order-items",
     "metadata": {
+      "precondition_description": "The user has requested an order item modification at some point in the conversation.",
       "description": "Detector norm: fires when the user denies an item modification request, triggering a CTD reparation that resets the flow to the pre-request state.",
       "constrained_actions": [
         "modify_pending_order_items"
@@ -519,6 +542,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-return",
     "metadata": {
+      "precondition_description": "The user has requested a return at some point in the conversation.",
       "description": "After the user requests a return, the agent must list the action details before any confirmation, denial, new request, or the action itself.",
       "constrained_actions": [
         "return_delivered_order_items"
@@ -536,6 +560,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-return",
     "metadata": {
+      "precondition_description": "The user has requested a return and the agent has subsequently listed the return details.",
       "description": "After listing return details, the agent must wait for explicit user confirmation or denial before issuing the action or processing a new request.",
       "constrained_actions": [
         "return_delivered_order_items"
@@ -553,6 +578,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-return",
     "metadata": {
+      "precondition_description": "The user has requested a return, the agent has listed the return details, and the user has explicitly confirmed.",
       "description": "After the user confirms a return, the agent must execute return_delivered_order_items before processing any new return request.",
       "constrained_actions": [
         "return_delivered_order_items"
@@ -570,6 +596,7 @@
     "obligation_type": "persistence",
     "reparative": "N1-return",
     "metadata": {
+      "precondition_description": "The user has requested a return at some point in the conversation.",
       "description": "Detector norm: fires when the user denies a return request, triggering a CTD reparation that resets the flow to the pre-request state.",
       "constrained_actions": [
         "return_delivered_order_items"
@@ -604,6 +631,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-exchange",
     "metadata": {
+      "precondition_description": "The user has requested an exchange at some point in the conversation.",
       "description": "After the user requests an exchange, the agent must list the action details before any confirmation, denial, new request, or the action itself.",
       "constrained_actions": [
         "exchange_delivered_order_items"
@@ -621,6 +649,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-exchange",
     "metadata": {
+      "precondition_description": "The user has requested an exchange and the agent has subsequently listed the exchange details.",
       "description": "After listing exchange details, the agent must wait for explicit user confirmation or denial before issuing the action or processing a new request.",
       "constrained_actions": [
         "exchange_delivered_order_items"
@@ -638,6 +667,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-exchange",
     "metadata": {
+      "precondition_description": "The user has requested an exchange, the agent has listed the exchange details, and the user has explicitly confirmed.",
       "description": "After the user confirms an exchange, the agent must execute exchange_delivered_order_items before processing any new exchange request.",
       "constrained_actions": [
         "exchange_delivered_order_items"
@@ -655,6 +685,7 @@
     "obligation_type": "persistence",
     "reparative": "N1-exchange",
     "metadata": {
+      "precondition_description": "The user has requested an exchange at some point in the conversation.",
       "description": "Detector norm: fires when the user denies an exchange request, triggering a CTD reparation that resets the flow to the pre-request state.",
       "constrained_actions": [
         "exchange_delivered_order_items"
@@ -689,6 +720,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-user-address",
     "metadata": {
+      "precondition_description": "The user has requested a default address modification at some point in the conversation.",
       "description": "After the user requests a default address modification, the agent must list the action details before any confirmation, denial, new request, or the action itself.",
       "constrained_actions": [
         "modify_user_address"
@@ -706,6 +738,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-user-address",
     "metadata": {
+      "precondition_description": "The user has requested a default address modification and the agent has subsequently listed the modification details.",
       "description": "After listing default address modification details, the agent must wait for explicit user confirmation or denial before issuing the action or processing a new request.",
       "constrained_actions": [
         "modify_user_address"
@@ -723,6 +756,7 @@
     "obligation_type": "maintenance",
     "reparative": "N1-modify-user-address",
     "metadata": {
+      "precondition_description": "The user has requested a default address modification, the agent has listed the modification details, and the user has explicitly confirmed.",
       "description": "After the user confirms a default address modification, the agent must execute modify_user_address before processing any new request for this action.",
       "constrained_actions": [
         "modify_user_address"
@@ -740,6 +774,7 @@
     "obligation_type": "persistence",
     "reparative": "N1-modify-user-address",
     "metadata": {
+      "precondition_description": "The user has requested a default address modification at some point in the conversation.",
       "description": "Detector norm: fires when the user denies a default address modification request, triggering a CTD reparation that resets the flow to the pre-request state.",
       "constrained_actions": [
         "modify_user_address"
@@ -810,6 +845,7 @@
     "obligation_type": "maintenance",
     "reparative": null,
     "metadata": {
+      "precondition_description": "The agent has called transfer_to_human_agents at some point in the conversation.",
       "description": "After calling transfer_to_human_agents, the agent must send the transfer notification message 'YOU ARE BEING TRANSFERRED TO A HUMAN AGENT. PLEASE HOLD ON.' to the user.",
       "constrained_actions": [
         "transfer_to_human_agents"

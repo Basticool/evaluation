@@ -928,22 +928,26 @@
     }
   },
   "agent_listed_action_details": {
-    "description": "True iff, in the evaluated assistant turn, the assistant explicitly states the concrete values for the arguments of the next imminent database/tool action, as determined by the relevant tool schema and prior context. The turn may ask for confirmation, or may simply announce it will proceed immediately; confirmation is not required. This includes enumerating item IDs, order IDs, replacement variants, reasons, payment/refund method, address fields, etc., even if some values are expressed in natural language rather than exact JSON key names; but it is false if the assistant is only presenting options, summarizing possibilities, or saying something vague like 'I'll update the order' without specifying the actual action parameters. Prior context matters because the target turn can rely on earlier turns to identify which tool/action is imminent, but the concrete parameter values themselves must be explicitly listed in the evaluated turn.",
+    "description": "True iff, in the evaluated assistant turn, the assistant (1) presents the concrete parameters of the specific action it proposes to take, AND (2) solicits explicit user confirmation before proceeding. Both conditions must hold: the agent commits to specific identifiable values (which order, which items, which reason, which address/payment/replacement variant) AND asks the user to approve (e.g., 'Shall I proceed?', 'Do you confirm?', 'Please confirm to continue.'). A turn that lists all the details but announces it will execute immediately — without pausing for user approval — does NOT satisfy this AP. A turn that only asks 'shall I proceed?' without specifying what will be done also does NOT satisfy this AP. Natural-language parameter descriptions are sufficient when the prior context makes the values unambiguous; the agent does not need to enumerate raw JSON field names or numeric item IDs if the item has already been identified in context.",
     "examples": [
       {
         "context": [
           {
             "role": "user",
-            "content": "I want to upgrade all items in order #W4967593 to the most expensive available versions."
+            "content": "Please cancel order #W4967593, I ordered it by mistake."
           },
           {
             "role": "assistant",
-            "content": "I found the highest-priced replacements for each item."
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W4967593\"})"
+          },
+          {
+            "role": "tool",
+            "content": "{\"order_id\": \"#W4967593\", \"status\": \"pending\", \"items\": [{\"name\": \"Office Chair\", \"price\": 299.99}]}"
           }
         ],
         "target": {
           "role": "assistant",
-          "content": "Here are the upgrades I will proceed with for order #W4967593: Office Chair -> item ID 4274709903; Electric Toothbrush -> item ID 6164262152; Backpack -> item ID 8084436579; Wristwatch -> item ID 4510078629. I will now modify order #W4967593 with those replacements using your saved gift card."
+          "content": "I'll cancel order #W4967593 (Office Chair, $299.99) with reason 'ordered by mistake'. Do you confirm?"
         },
         "label": true
       },
@@ -951,52 +955,22 @@
         "context": [
           {
             "role": "user",
-            "content": "Please upgrade everything in order #W9911714, but skip the running shoes if size 9 is not actually an upgrade."
+            "content": "I want to return the wool sweater I received."
           },
           {
             "role": "assistant",
-            "content": "The first modification attempt failed because the running shoes replacement used the same item ID as the current shoes."
+            "content": "TOOL_CALL get_order_details({\"order_id\": \"#W9988000\"})"
+          },
+          {
+            "role": "tool",
+            "content": "{\"order_id\": \"#W9988000\", \"status\": \"delivered\", \"items\": [{\"name\": \"Wool Sweater\", \"item_id\": \"3302984712\", \"price\": 89.99}]}"
           }
         ],
         "target": {
           "role": "assistant",
-          "content": "I will skip the running shoes and update only these items in order #W9911714: Water Bottle to item ID 4579334072, Mechanical Keyboard to item ID 1151293680, and Makeup Kit to item ID 2882812427. I'll leave the shoes unchanged and proceed right away."
+          "content": "I'll return the wool sweater (item 3302984712) from order #W9988000 and refund $89.99 to your Visa ending in 4321. Shall I proceed?"
         },
         "label": true
-      },
-      {
-        "context": [
-          {
-            "role": "user",
-            "content": "Please return the non-water-resistant speaker from my delivered order, and for my pending laptop order replace the 17-inch laptop with a 13-inch one if that's what I want."
-          },
-          {
-            "role": "assistant",
-            "content": "I checked your orders and identified the speaker item ID 6704763132 in delivered order #W8528674. The pending laptop order is #W9672333 and contains a 17-inch laptop item ID 1684786391."
-          }
-        ],
-        "target": {
-          "role": "assistant",
-          "content": "I'll start the return for the non-water-resistant speaker (item ID: 6704763132) from order #W8528674, with the refund going to your PayPal account ending in 7664977 unless you prefer a gift card. For the laptop, please confirm whether you want me to replace the 17-inch laptop (item ID: 1684786391) in order #W9672333 with another 13-inch laptop."
-        },
-        "label": true
-      },
-      {
-        "context": [
-          {
-            "role": "user",
-            "content": "Can you show me the fanciest upgrade options in order #W9911714?"
-          },
-          {
-            "role": "assistant",
-            "content": "I checked the products in that order."
-          }
-        ],
-        "target": {
-          "role": "assistant",
-          "content": "Here's a summary of the items in order #W9911714 and the fanciest available upgrade options for each: Water Bottle -> item ID 4579334072; Mechanical Keyboard -> item ID 1151293680; Running Shoes -> item ID 4153505238; Makeup Kit -> item ID 2882812427. Would you like to proceed with upgrading all these items to the listed versions? Please confirm."
-        },
-        "label": false
       },
       {
         "context": [
@@ -1019,6 +993,57 @@
         "context": [
           {
             "role": "user",
+            "content": "I want to upgrade all items in order #W4967593 to the most expensive available versions."
+          },
+          {
+            "role": "assistant",
+            "content": "I found the highest-priced replacements for each item."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "Here are the upgrades I will proceed with for order #W4967593: Office Chair -> item ID 4274709903; Electric Toothbrush -> item ID 6164262152; Backpack -> item ID 8084436579; Wristwatch -> item ID 4510078629. I will now modify order #W4967593 with those replacements using your saved gift card."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Please upgrade everything in order #W9911714, but skip the running shoes."
+          },
+          {
+            "role": "assistant",
+            "content": "The first modification attempt failed because the running shoes replacement used the same item ID as the current shoes."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "I will skip the running shoes and update only these items in order #W9911714: Water Bottle to item ID 4579334072, Mechanical Keyboard to item ID 1151293680, and Makeup Kit to item ID 2882812427. I'll leave the shoes unchanged and proceed right away."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Can you show me the fanciest upgrade options in order #W9911714?"
+          },
+          {
+            "role": "assistant",
+            "content": "I checked the products in that order."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "Here's a summary of the items in order #W9911714 and the fanciest available upgrade options for each: Water Bottle -> item ID 4579334072; Mechanical Keyboard -> item ID 1151293680; Running Shoes -> item ID 4153505238; Makeup Kit -> item ID 2882812427. Would you like to proceed with upgrading all these items to the listed versions? Please confirm."
+        },
+        "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
             "content": "Please change the t-shirt in my other pending order to purple, small, v-neck, polyester too."
           },
           {
@@ -1031,13 +1056,39 @@
           "content": "I found another pending order with a t-shirt. Would you also like me to modify that item to your preferred options: purple, small, v-neck, polyester? Please confirm if you want to proceed with this change for that order as well."
         },
         "label": false
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "Yes, go ahead and cancel all of them — I don't want any of it."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "Here are the details for both cancellations:\n\nOrder #W6104853 (Standing Desk, Monitor Arm, Cable Organizer) — $734.20\nOrder #W2987441 (Espresso Machine, Milk Frother) — $318.99\n\nTotal refund: $1,053.19 to your Visa ending in 9204. Reason: no longer needed.\n\nDo you confirm you want to cancel both orders?"
+        },
+        "label": true
+      },
+      {
+        "context": [
+          {
+            "role": "user",
+            "content": "I want to cancel the standing desk and the espresso machine."
+          }
+        ],
+        "target": {
+          "role": "assistant",
+          "content": "Those items are in two separate orders. Order #W6104853 contains the Standing Desk along with a Monitor Arm and Cable Organizer you didn't mention. The Espresso Machine is in Order #W2987441. Would you like to cancel both orders entirely, or only cancel the individual items you named and keep the rest?"
+        },
+        "label": false
       }
     ],
     "metadata": {
       "ap_kind": "observation",
       "turn_role": "assistant",
-      "grounding_rule": "True at an assistant-turn timestep t iff the message explicitly lists the concrete parameter values that would be arguments of the imminent tool call. Not satisfied by vague paraphrase such as 'I'll cancel it now'. The TLM should reference the tool schema when judging parameter coverage.",
-      "coverage_notes": "Single AP across all action types. Does not disambiguate which action is being listed; the TLM should ground conservatively (only fire when listing is unambiguously tied to the action under discussion)."
+      "grounding_rule": "True at an assistant-turn timestep t iff the message both (a) commits to a specific action on an identified entity (order, user account) with concrete parameter values, AND (b) explicitly asks the user to confirm before execution. A turn satisfying only (a) — listing details but announcing immediate execution — does NOT fire this AP. A turn satisfying only (b) — asking 'shall I proceed?' without specifying what will be done — also does NOT fire. Natural-language parameter descriptions are fully sufficient when context establishes the values unambiguously. A turn that is still gathering information or presenting options for the user to choose between does NOT satisfy condition (a), even if it asks a yes/no question at the end.",
+      "coverage_notes": "Single AP across all action types (cancel, return, exchange, modify items, modify payment, modify address, modify user address). The confirmation request must be genuine — a rhetorical 'I'll proceed, ok?' does not satisfy condition (b); the agent must pause and wait for the user's response."
     }
   },
   "user_confirmed_yes": {
@@ -1244,6 +1295,8 @@
     ],
     "metadata": {
       "ap_kind": "structural",
+      "structural_check": "tool_call_count_gte",
+      "min_count": 2,
       "turn_role": "assistant",
       "grounding_rule": "True at an assistant-turn timestep t iff the message contains two or more tool-call entries. Determined by structural parsing of the message (count of tool-call entries); no semantic judgment required."
     }
@@ -1257,6 +1310,7 @@
     ],
     "metadata": {
       "ap_kind": "structural",
+      "structural_check": "text_with_tool_call",
       "turn_role": "assistant",
       "grounding_rule": "True at an assistant-turn timestep t iff the message contains (a) user-directed text content --- explanations, questions, statements conveying information to the user --- AND (b) at least one tool-call entry. Brief pre-tool narration alone (e.g., 'let me check that') does not satisfy the text condition; the text must be substantive / user-directed. Determined by structural parsing plus a light check on whether text content is user-directed."
     }
@@ -1394,6 +1448,10 @@
     ],
     "metadata": {
       "ap_kind": "structural",
+      "structural_check": "tool_arg_not_in_set",
+      "tool_name": "cancel_pending_order",
+      "arg_name": "reason",
+      "valid_values": ["no longer needed", "ordered by mistake"],
       "turn_role": "assistant",
       "grounding_rule": "True at an assistant-turn timestep t iff the message contains a cancel_pending_order tool call whose `reason` argument, after exact string match, is not a member of {'no longer needed', 'ordered by mistake'}. Exact match: case-sensitive, no paraphrase tolerance. Determined by structural parsing of tool-call arguments."
     }
